@@ -1,7 +1,7 @@
 import Foundation
 
 struct Seed: Decodable, Identifiable {
-    let id: UUID
+    let id: Int
     let username: String
     let text: String
     let favorite: Int

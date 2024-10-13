@@ -1,0 +1,12 @@
+name: hsp-community
+services:
+  db:
+    image: postgres:15
+    container_name: hsp-community-postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: hsp-community
+    command: postgres -c log_destination=stderr -c log_statement=all -c log_connections=on -c log_disconnections=on
