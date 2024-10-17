@@ -12,7 +12,7 @@ data class SeedEntiry(
     val id: Long = 0,
     val username: String,
     val text: String,
-    val favorite: Int,
+    var favorite: Int,
     val comment: Int,
     val tag: Tag,
 ) {

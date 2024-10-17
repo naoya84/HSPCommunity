@@ -4,16 +4,6 @@ import Nimble
 import ViewInspector
 @testable import HSPCommunity
 
-class SpySowSeedPageViewModel: SowSeedPageViewModel {
-    var input: String = ""
-    var selectedTab: Binding<HSPCommunity.AppTab> = .constant(AppTab.sowSeed)
-    
-    var sowSeed_wasCalled = false
-    func sowSeed() {
-        sowSeed_wasCalled = true
-    }
-}
-
 final class SowSeedPageViewTests: XCTestCase {
     func test_textEditorとbuttonが正しく表示される() throws {
         let viewModel = SpySowSeedPageViewModel()
@@ -35,6 +25,14 @@ final class SowSeedPageViewTests: XCTestCase {
         
         let button = try view.inspect().find(ViewType.Button.self)
         try button.tap()
-        expect(viewModel.sowSeed_wasCalled).to(beTrue())
+        
+        let exceptation = XCTestExpectation()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            expect(viewModel.sowSeed_wasCalled).to(beTrue())
+            exceptation.fulfill()
+        }
+        
+        wait(for: [exceptation], timeout: 1)
     }
 }

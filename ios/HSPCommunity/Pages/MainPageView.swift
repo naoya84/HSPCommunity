@@ -6,7 +6,7 @@ struct MainPageView<VM: MainPageViewModel>: View {
     var body: some View {
         NavigationView {
             VStack {
-                List(viewModel.seeds) { seed in
+                List(viewModel.seeds.sorted(by: {$0.id < $1.id})) { seed in
                     VStack {
                         HStack {
                             Text(seed.username)
@@ -23,8 +23,18 @@ struct MainPageView<VM: MainPageViewModel>: View {
                         HStack {
                             Spacer()
                             HStack {
-                                Text("💧"+String(seed.favorite))
-                                Text("📝"+String(seed.comment))
+                                Button {
+                                    Task {
+                                        do {
+                                            try await viewModel.addFavorite(seedId: seed.id)
+                                        }
+                                    }
+                                } label: {
+                                    Text("💧")
+                                }
+                                
+                                Text(String(seed.favorite))
+                                Text("📝" + String(seed.comment))
                             }
                         }
                     }
@@ -55,9 +65,26 @@ struct MainPageView<VM: MainPageViewModel>: View {
 }
 
 #Preview {
-    MainPageView(
-        viewModel: MainPageViewModelImpl(
-            container: .make()
+    class DummyMainPageViewModel: MainPageViewModel {
+        
+        var container: DIContainer = .make()
+        var seeds: [HSPCommunity.Seed] = []
+        func getSeeds() async throws {}
+        func addFavorite(seedId: Int) async throws {}
+    }
+    
+    let viewModel = DummyMainPageViewModel()
+    
+    viewModel.seeds = [
+        Seed(
+            id: 1,
+            username: "繊細さんA",
+            text: "〇〇について教えてください",
+            favorite: 1,
+            comment: 4,
+            tag: .help
         )
-    )
+    ]
+    
+    return MainPageView(viewModel: viewModel)
 }

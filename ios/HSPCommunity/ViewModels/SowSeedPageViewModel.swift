@@ -19,7 +19,7 @@ class SowSeedPageViewModelImpl: SowSeedPageViewModel {
     }
     
     func sowSeed() async throws{
-        try await container.seedRepository.postSeeds(text: input)
+        try await container.seedRepository.postSeed(text: input)
         selectedTab.wrappedValue = AppTab.main
     }
 }

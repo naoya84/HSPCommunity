@@ -37,4 +37,18 @@ class SeedController(private val seedService: SeedService) {
         )
         return body.text
     }
+
+    @GetMapping("/favorite/{seedId}")
+    fun addFavorite(@PathVariable seedId: Int): List<GetSeedResponse> {
+        return seedService.addFavorite(seedId).map {
+            GetSeedResponse(
+                id = it.id,
+                username = it.username,
+                text = it.text,
+                favorite = it.favorite,
+                comment = it.comment,
+                tag = it.tag,
+            )
+        }
+    }
 }
